@@ -24,7 +24,7 @@ spec:
   tasks:
   - name: manage-certificates
     taskRef:
-      name: update-ingress-certificate
+      name: certificate
     resources:
       inputs:
         - name: source

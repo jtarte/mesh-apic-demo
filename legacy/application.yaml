@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-legacy-a
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-legacy-a
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-legacy-a
+        purpose: istio-demo
+    spec:
+      containers:
+        - name: service-z-a
+          image: image-registry.openshift-image-registry.svc:5000/default/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-legacy-a
+            - name: VERSION
+              value: v1
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-legacy-a
+  labels:
+    app: service-legacy-a
+    purpose: istio-demo
+spec:
+  ports:
+   - port: 80
+     name: http
+     targetPort: 8080
+  selector:
+   app: service-legacy-a
+

@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+piVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: deploy-project
@@ -11,13 +11,16 @@ spec:
   params:
     - name: targetNamespace
       description: the name of target namespace where the deployment is done
-      default: cloud-api
+      default: legacy-api
     - name: domain
       description: the name of target namespace where the deployment is done
       default: 192.168.64.2.nip.io
     - name: subdomain
       description: the name of target namespace where the deployment is done
-      default: cloud-api  
+      default: legacy-api  
+    - name: genericName
+      description: the name of target namespace where the deployment is done
+      default: legacy
   tasks:
   - name: deploy-app
     taskRef:
@@ -34,10 +37,12 @@ spec:
     - name: subdomain
       value: "$(params.subdomain)"
     - name: yamlFile
-      value: "cloud-api/application.yaml"
-  - name: deploy-gateway
+      value: "$(params.genericName)/application.yaml"
+    - name: genericName
+      value: "$(params.genericName)"
+  - name: route-app
     taskRef:
-      name: deploy-gateway
+      name: legacy-route
     resources:
       inputs:
         - name: source
@@ -45,25 +50,9 @@ spec:
     params:
     - name: targetNamespace
       value: "$(params.targetNamespace)"
-    - name: domain
-      value: "$(params.domain)"
     - name: subdomain
       value: "$(params.subdomain)"
-    - name: yamlFile
-      value: "cloud-api/gateway.yaml"
-  - name: deploy-virtualservice
-    taskRef:
-      name: deploy-virtualservice
-    resources:
-      inputs:
-        - name: source
-          resource: source
-    params:
-    - name: targetNamespace
-      value: "$(params.targetNamespace)"
     - name: domain
       value: "$(params.domain)"
-    - name: subdomain
-      value: "$(params.subdomain)"
-    - name: yamlFile
-      value: "cloud-api/virtual-service.yaml"
+    - name: genericName
+      value: "$(params.genericName)"

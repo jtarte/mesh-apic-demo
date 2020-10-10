@@ -34,3 +34,17 @@ spec:
     params:
     - name: targetNamespace
       value: "$(params.targetNamespace)"
+  - name: deploy-gateway
+    taskRef:
+      name: deploy-gateway
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: domain
+      value: "$(params.domain)"
+    - name: subdomain
+      value: "$(params.subdomain)"

@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: deploy-gateway
+spec:
+  inputs:
+    resources:
+      - name: source
+        type: git
+    params:
+      - name: pathToContext
+        type: string
+        default: /workspace/source
+      - name: targetNamespace
+        type: string
+        default: cloud-api
+      - name: subdomain
+        type: string
+        default: cloud-api
+      - name: domain
+        type: string
+        default: cloud-api
+  steps:
+    - name: update-yaml
+      image: alpine
+      command: ["sed"]
+      args:
+        - "-i"
+        - "-e"
+        - "s;frontend.;$(inputs.params.subdomain);g"
+        - "$(inputs.params.pathToContext)/cloud-api/application.yaml"
+    - name: update-yaml-2
+      image: alpine
+      command: ["sed"]
+      args:
+        - "-i"
+        - "-e"
+        - "s;192.168.64.2.nip.io;$(inputs.params.domain);g"
+        - "$(inputs.params.pathToContext)/cloud-api/application.yaml"
+    - name: oc-apply
+      image: quay.io/openshift/origin-cli:latest
+      command: ["/bin/bash", "-c"]
+      args:
+        - oc apply -f $(inputs.params.pathToContext)/cloud-api/gateway.yaml -n $(inputs.params.targetNamespace)

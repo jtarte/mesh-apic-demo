@@ -1,0 +1,21 @@
+[{
+    "op": "add",
+    "path": "/spec/template/spec/containers/0/volumeMounts/0",
+    "value": {
+      "mountPath": "/etc/istio/ingressgateway-frontend-certs",
+      "name": "ingressgateway-frontend-certs",
+      "readOnly": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/spec/template/spec/volumes/0",
+    "value": {
+    "name": "ingressgateway-frontend-certs",
+      "secret": {
+        "secretName": "istio-ingressgateway-frontend-certs",
+        "optional": true
+      }
+    }
+  }
+]

@@ -7,13 +7,13 @@ spec:
   - name: pathToContext
     value: /workspace/docker-source
   - name: targetNamespace
-    value: ei-cloud-backend
+    value: ei-cloud-frontend
   - name: domain
     value: 192.168.64.2.nip.io
   - name: subdomain
-    value: cloud-backend
+    value: cloud-frontend
   - name: genericName
-    value: cloud-backend
+    value: cloud-frontend
   pipelineRef:
     name: deploy-project
   resources:

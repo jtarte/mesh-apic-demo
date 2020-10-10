@@ -11,14 +11,12 @@ spec:
   params:
     - name: targetNamespace
       description: the name of target namespace where the deployment is done
-      default: cloud-api
     - name: domain
       description: the name of target namespace where the deployment is done
     - name: subdomain
       description: the name of target namespace where the deployment is done 
     - name: genericName
       description: the name of target namespace where the deployment is done
-      default: cloud-backend
   tasks:
   - name: deploy-app
     taskRef:

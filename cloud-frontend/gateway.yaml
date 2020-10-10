@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: cloud-frontend-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 443
+      name: https-front
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/ingressgateway-frontend-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-frontend-certs/tls.key
+    hosts:
+    - "cloud-frontend.192.168.64.2.nip.io"

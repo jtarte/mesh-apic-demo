@@ -17,12 +17,6 @@ spec:
         type: string
         default: phonebook
   steps:
-    - name: folder
-      image: alpine
-      command: ["pwd"]
-    - name: view
-      image: alpine
-      command: ["ls", "-al","./source/cloud-api"]
     - name: update-yaml
       image: alpine
       command: ["sed"]

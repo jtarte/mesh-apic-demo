@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: deploy-project
+  name: certs-project
 spec:
   resources:
     - name: source
@@ -22,15 +22,19 @@ spec:
       description: the name of target namespace where the deployment is done
       default: cloud-api  
   tasks:
-  - name: deploy-app
+  - name: manage-certificates
     taskRef:
-      name: deploy-app
+      name: update-ingress-certificate
     resources:
       inputs:
         - name: source
           resource: source
-        - name: image
-          resource: image
     params:
     - name: targetNamespace
-      value: "$(params.targetNamespace)"
+      value: "$(params.targetNamespace)"  
+    - name: meshNamespace
+      value: "$(params.meshNamespace)"  
+    - name: domain
+      value: "$(params.domain)" 
+    - name: subdomain
+      value: "$(params.subdomain)"

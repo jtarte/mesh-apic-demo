@@ -13,7 +13,6 @@ spec:
         default: /workspace/source
       - name: targetNamespace
         type: string
-        default: cloud-api
       - name: domain
         type: string
       - name: subdomain
@@ -32,6 +31,6 @@ spec:
       image: quay.io/openshift/origin-cli:latest
       command: ["/bin/bash", "-c"]
       args: 
-      - oc create route edge --service=service-$(inputs.params.subdomain)-a --hostname=$(inputs.params.subdomain).$(inputs.params.domain) --key=$(inputs.params.subdomain).$(inputs.params.domain).key --cert=$(inputs.params.subdomain).$(inputs.params.domain).crt --insecure-policy=Redirect
+      - oc create route edge --service=service-$(inputs.params.subdomain)-a -n $(inputs.params.targetNamespace) --hostname=$(inputs.params.subdomain).$(inputs.params.domain) --key=$(inputs.params.pathToContext)/$(inputs.params.genericName)/$(inputs.params.subdomain).$(inputs.params.domain).key --cert=$(inputs.params.pathToContext)/$(inputs.params.genericName)/$(inputs.params.subdomain).$(inputs.params.domain).crt --insecure-policy=Redirect
 
 

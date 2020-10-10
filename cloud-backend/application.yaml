@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-backend-a
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-backend-a
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-backend-a
+        purpose: istio-demo
+        version: v1
+    spec:
+      containers:
+        - name: service-cloud-backend-a
+          image: image-registry.openshift-image-registry.svc:5000/default/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-cloud-backend-a
+            - name: VERSION
+              value: v1
+            - name: TARGET
+              value: service-cloud-backend-b
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-cloud-backend-a
+  labels:
+    app: service-cloud-backend-a
+    purpose: istio-demo
+spec:
+  ports:
+   - port: 80
+     name: http
+     targetPort: 8080
+  selector:
+   app: service-cloud-backend-a
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-backend-b
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-backend-b
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-backend-b
+        purpose: istio-demo
+        version: v1
+    spec:
+      containers:
+        - name: service-cloud-backend-b
+          image: image-registry.openshift-image-registry.svc:5000/default/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-cloud-backend-b
+            - name: VERSION
+              value: v1
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-cloud-backend-b
+  labels:
+    app: service-cloud-backend-b
+    purpose: istio-demo
+spec:
+  ports:
+   - port: 80
+     name: http
+     targetPort: 8080
+  selector:
+   app: service-cloud-backend-b

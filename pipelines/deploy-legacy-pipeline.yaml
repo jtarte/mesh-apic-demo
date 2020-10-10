@@ -1,7 +1,7 @@
-piVersion: tekton.dev/v1beta1
-kind: Pipeline
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline 
 metadata:
-  name: deploy-project
+  name: deploy-legacy
 spec:
   resources:
     - name: source
@@ -43,6 +43,8 @@ spec:
   - name: route-app
     taskRef:
       name: legacy-route
+    runAfter:
+      - deploy-app
     resources:
       inputs:
         - name: source

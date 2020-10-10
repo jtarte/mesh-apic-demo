@@ -14,10 +14,11 @@ spec:
       default: cloud-api
     - name: domain
       description: the name of target namespace where the deployment is done
-      default: 192.168.64.2.nip.io
     - name: subdomain
+      description: the name of target namespace where the deployment is done 
+    - name: genericName
       description: the name of target namespace where the deployment is done
-      default: cloud-api  
+      default: cloud-backend
   tasks:
   - name: deploy-app
     taskRef:
@@ -34,7 +35,9 @@ spec:
     - name: subdomain
       value: "$(params.subdomain)"
     - name: yamlFile
-      value: "cloud-api/application.yaml"
+      value: "$(params.genericName)/application.yaml"
+    - name: genericName
+      value: "$(params.genericName)"
   - name: deploy-gateway
     taskRef:
       name: deploy-gateway
@@ -50,7 +53,9 @@ spec:
     - name: subdomain
       value: "$(params.subdomain)"
     - name: yamlFile
-      value: "cloud-api/gateway.yaml"
+      value: "$(params.genericName)/gateway.yaml"
+    - name: genericName
+      value: "$(params.genericName)"
   - name: deploy-virtualservice
     taskRef:
       name: deploy-virtualservice
@@ -66,4 +71,6 @@ spec:
     - name: subdomain
       value: "$(params.subdomain)"
     - name: yamlFile
-      value: "cloud-api/virtual-service.yaml"
+      value: "$(params.genericName)/virtual-service.yaml"
+    - name: genericName
+      value: "$(params.genericName)"

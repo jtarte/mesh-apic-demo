@@ -22,6 +22,8 @@ spec:
         default: cloud-api
       - name: yamlFile
         type: string 
+      - name: genericName
+        type: string
   steps:
     - name: update-yaml
       image: alpine
@@ -29,7 +31,7 @@ spec:
       args:
         - "-i"
         - "-e"
-        - "s;frontend;$(inputs.params.subdomain);g"
+        - "s;$(inputs.params.genericName);$(inputs.params.subdomain);g"
         - "$(inputs.params.pathToContext)/$(inputs.params.yamlFile)"
     - name: update-yaml-2
       image: alpine

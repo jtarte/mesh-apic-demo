@@ -1,0 +1,112 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: deploy-frontend
+spec:
+  resources:
+    - name: source
+      type: git
+    - name: image
+      type: image
+  params:
+    - name: targetNamespace
+      description: the name of target namespace where the deployment is done
+    - name: domain
+      description: the name of target namespace where the deployment is done
+    - name: subdomain
+      description: the name of target namespace where the deployment is done 
+    - name: genericName
+      description: the name of target namespace where the deployment is done
+    - name: hostBackend
+      description: host of backend service
+  tasks:
+  - name: deploy-app
+    taskRef:
+      name: deploy-app
+    resources:
+      inputs:
+        - name: source
+          resource: source
+        - name: image
+          resource: image
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: subdomain
+      value: "$(params.subdomain)"
+    - name: yamlFile
+      value: "$(params.genericName)/application.yaml"
+    - name: genericName
+      value: "$(params.genericName)"
+  - name: deploy-gateway
+    taskRef:
+      name: deploy-gateway
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: domain
+      value: "$(params.domain)"
+    - name: subdomain
+      value: "$(params.subdomain)"
+    - name: yamlFile
+      value: "$(params.genericName)/gateway.yaml"
+    - name: genericName
+      value: "$(params.genericName)"
+  - name: deploy-virtualservice
+    taskRef:
+      name: deploy-virtualservice
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: domain
+      value: "$(params.domain)"
+    - name: subdomain
+      value: "$(params.subdomain)"
+    - name: yamlFile
+      value: "$(params.genericName)/virtual-service.yaml"
+    - name: genericName
+      value: "$(params.genericName)"
+  - name: egress-cloud-backend
+    taskRef:
+      name: egress
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: host
+      value: "$(params.hostBackend)"
+    - name: subdomain
+      value: "$(params.subdomain)"
+    - name: yamlFile
+      value: "$(params.genericName)/cloud-backend-egress.yaml"
+    - name: oldHost
+      value: "cloud-backend.192.168.64.2.nip.io"
+  - name: egress-legacy-backend
+    taskRef:
+      name: egress
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: host
+      value: "$(params.hostLegacy)"
+    - name: subdomain
+      value: "$(params.subdomain)"
+    - name: yamlFile
+      value: "$(params.genericName)/legacy-egress.yaml"
+    - name: oldHost
+      value: "z-backend.192.168.64.2.nip.io"

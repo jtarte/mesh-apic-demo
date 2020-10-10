@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
 metadata:
-  name: ei-cloud-backend
+  name: ei-cloud-frontend
 spec:
   params:
   - name: pathToContext
@@ -14,6 +14,10 @@ spec:
     value: cloud-frontend
   - name: genericName
     value: cloud-frontend
+  - name: hostBackend
+    value: cloud-backend.192.168.64.2.nip.io
+  - name: hostLegacy
+    value: z-backend.192.168.64.2.nip.io
   pipelineRef:
     name: deploy-project
   resources:

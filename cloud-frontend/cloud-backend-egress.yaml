@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: cloud-backend-service
+spec:
+  hosts:
+  - cloud-backend.192.168.64.2.nip.io
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+  - number: 443
+    name: https-port-for-tls-origination
+    protocol: HTTPS
+  resolution: DNS
+  location: MESH_EXTERNAL

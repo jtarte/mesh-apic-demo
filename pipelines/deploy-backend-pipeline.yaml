@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: deploy-project
+  name: deploy-backend
 spec:
   resources:
     - name: source

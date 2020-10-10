@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: egress
+spec:
+  inputs:
+    resources:
+      - name: source
+        type: git
+      - name: image
+        type: image
+    params:
+      - name: pathToContext
+        type: string
+        default: /workspace/source
+      - name: targetNamespace
+        type: string
+        default: phonebook
+      - name: host
+        type: string
+      - name: yamlFile
+        type: string 
+      - name: oldHost
+        type: string
+  steps:
+    - name: update-yaml
+      image: alpine
+      command: ["sed"]
+      args:
+        - "-i"
+        - "-e"
+        - "s;$(input.params.oldHost);$(inputs.params.host);g"
+        - "$(inputs.params.pathToContext)/$(inputs.params.yamlFile)"
+    - name: update-yaml2
+      image: alpine
+      command: ["sed"]
+      args:
+        - "-i"
+        - "-e"
+        - "s;$(inputs.params.genericName);$(inputs.params.subdomain);g"
+        - "$(inputs.params.pathToContext)/$(inputs.params.yamlFile)"
+    - name: oc-apply
+      image: quay.io/openshift/origin-cli:latest
+      command: ["/bin/bash", "-c"]
+      args:
+        - oc apply -f $(inputs.params.pathToContext)/$(inputs.params.yamlFile) -n $(inputs.params.targetNamespace)

@@ -16,6 +16,8 @@ spec:
       - name: targetNamespace
         type: string
         default: phonebook
+      - name: subdomain
+        type: string
   steps:
     - name: update-yaml
       image: alpine
@@ -24,6 +26,14 @@ spec:
         - "-i"
         - "-e"
         - "s;image-registry.openshift-image-registry.svc:5000/default/myservice:latest;$(inputs.resources.image.url);g"
+        - "$(inputs.params.pathToContext)/cloud-api/application.yaml"
+    - name: update-yaml2
+      image: alpine
+      command: ["sed"]
+      args:
+        - "-i"
+        - "-e"
+        - "s;cloud-frontend;$(inputs.params.subdomain);g"
         - "$(inputs.params.pathToContext)/cloud-api/application.yaml"
     - name: oc-apply
       image: quay.io/openshift/origin-cli:latest

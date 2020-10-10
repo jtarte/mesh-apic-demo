@@ -9,9 +9,6 @@ spec:
     - name: image
       type: image
   params:
-    - name: meshNamespace
-      description: the namespace of the service mesh 
-      default: istio-system
     - name: targetNamespace
       description: the name of target namespace where the deployment is done
       default: cloud-api
@@ -34,6 +31,8 @@ spec:
     params:
     - name: targetNamespace
       value: "$(params.targetNamespace)"
+    - name: subdomain
+      value: "$(params.subdomain)"
   - name: deploy-gateway
     taskRef:
       name: deploy-gateway

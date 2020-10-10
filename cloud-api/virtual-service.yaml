@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: service-cloud-frondend-a
+  name: service-frondend-a
 spec:
   hosts:
   - "frontend.192.168.64.2.nip.io"
@@ -13,6 +13,6 @@ spec:
         exact: /invoke
     route:
     - destination:
-        host: service-cloud-frontend-a
+        host: service-frontend-a
         port:
           number: 80

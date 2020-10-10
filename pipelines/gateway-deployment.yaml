@@ -27,7 +27,7 @@ spec:
       args:
         - "-i"
         - "-e"
-        - "s;frontend.;$(inputs.params.subdomain);g"
+        - "s;frontend;$(inputs.params.subdomain);g"
         - "$(inputs.params.pathToContext)/cloud-api/gateway.yaml"
     - name: update-yaml-2
       image: alpine

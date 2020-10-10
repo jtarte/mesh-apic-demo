@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: deploy-app
+spec:
+  inputs:
+    resources:
+      - name: source
+        type: git
+      - name: image
+        type: image
+    params:
+      - name: pathToContext
+        type: string
+        default: /workspace/source
+      - name: targetNamespace
+        type: string
+        default: phonebook
+  steps:
+    - name: update-yaml
+      image: alpine
+      command: ["sed"]
+      args:
+        - "-i"
+        - "-e"
+        - "s;image-registry.openshift-image-registry.svc:5000/default/myservice:latest;$(inputs.resources.image.url);g"
+        - "$(inputs.params.pathToContext)/cloud-api/aplication.yml"
+    - name: oc-apply
+      image: quay.io/openshift/origin-cli:latest
+      command: ["/bin/bash", "-c"]
+      args:
+        - oc apply -f $(inputs.params.pathToContext)/cloud-api/aplication.yml -n $(inputs.params.targetNamespace)

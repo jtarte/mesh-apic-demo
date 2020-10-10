@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: deploy-project
+spec:
+  resources:
+    - name: source
+      type: git
+    - name: image
+      type: image
+  params:
+    - name: meshNamespace
+      description: the namespace of the service mesh 
+      default: istio-system
+    - name: targetNamespace
+      description: the name of target namespace where the deployment is done
+      default: cloud-api
+  tasks:
+  - name: deploy-app
+    taskRef:
+      name: deploy-app
+    resources:
+      inputs:
+        - name: source
+          resource: source
+        - name: image
+          resource: image
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"

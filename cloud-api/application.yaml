@@ -1,0 +1,195 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-frontend-a
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-frontend-a
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-frontend-a
+        purpose: istio-demo
+        version: v1
+    spec:
+      containers:
+        - name: service-cloud-frontend-a
+          image: image-registry.openshift-image-registry.svc:5000/default/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-cloud-frontend-a
+            - name: VERSION
+              value: v1
+            - name: TARGET
+              value: service-cloud-frontend-b,service-cloud-frontend-c
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-cloud-frontend-a
+  labels:
+    app: service-cloud-frontend-a
+    purpose: istio-demo
+spec:
+  ports:
+   - port: 80
+     name: http
+     targetPort: 8080
+  selector:
+   app: service-cloud-frontend-a
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-frontend-b
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-frontend-b
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-frontend-b
+        purpose: istio-demo
+        version: v1
+    spec:
+      containers:
+        - name: service-cloud-frontend-b
+          image: image-registry.openshift-image-registry.svc:5000/default/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-cloud-frontend-b
+            - name: VERSION
+              value: v1
+            - name: TARGET
+              value: service-cloud-frontend-d
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-cloud-frontend-b
+  labels:
+    app: service-cloud-frontend-b
+    purpose: istio-demo
+spec:
+  ports:
+   - port: 80
+     name: http
+     targetPort: 8080
+  selector:
+   app: service-cloud-frontend-b
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-frontend-c
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-frontend-c
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-frontend-c
+        purpose: istio-demo
+        version: v1
+    spec:
+      containers:
+        - name: service-cloud-frontend-c
+          image: image-registry.openshift-image-registry.svc:5000/default/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-cloud-frontend-c
+            - name: VERSION
+              value: v1
+            - name: TARGET
+              value: z-backend.192.168.64.2.nip.io
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-cloud-frontend-c
+  labels:
+    app: service-cloud-frontend-c
+    purpose: istio-demo
+spec:
+  ports:
+   - port: 80
+     name: http
+     targetPort: 8080
+  selector:
+   app: service-cloud-frontend-c
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-frontend-d
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-frontend-d
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-frontend-d
+        purpose: istio-demo
+        version: v1
+    spec:
+      containers:
+        - name: service-cloud-frontend-d
+          image: image-registry.openshift-image-registry.svc:5000/default/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-cloud-frontend-d
+            - name: VERSION
+              value: v1
+            - name: TARGET
+              value: cloud-backend.192.168.64.2.nip.io
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-cloud-frontend-d
+  labels:
+    app: service-cloud-frontend-d
+    purpose: istio-demo
+spec:
+  ports:
+   - port: 80
+     name: http
+     targetPort: 8080
+  selector:
+   app: service-cloud-frontend-d

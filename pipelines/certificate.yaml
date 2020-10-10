@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: certificate
+spec:
+  inputs:
+    resources:
+      - name: source
+        type: git
+    params:
+      - name: pathToContext
+        type: string
+        default: /workspace/source
+      - name: targetNamespace
+        type: string
+        default: cloud-api
+      - name: domain
+        type: string
+      - name: subdomain
+        type: string 
+      - name: meshNamespace
+        type: string
+        default: itsio-system
+  steps:
+    - name: generate-certificates
+      image: ubuntu
+      script: |
+        #!/usr/bin/env bash
+        cd $(inputs.params.pathToContext)/cloud-api
+        pwd 
+        ls -al ../scripts
+        ../scripts/generate_tls.sh $(inputs.params.domain) $(inputs.params.subdomain)
+    - name: create-secret
+      image: quay.io/openshift/origin-cli:latest
+      command: ["/bin/bash", "-c"]
+      args: 
+      - oc create -n $(inputs.params.meshNamespace) secret tls $(inputs.params.pathToContext)/cloud-api/istio-ingressgateway-$(params.subdomain)-certs --key $(inputs.params.pathToContext)/cloud-api/$(inputs.params.subdomain).$(inputs.params.domain).key --cert $(inputs.params.subdomain).$(inputs.params.domain).crt

@@ -17,6 +17,12 @@ spec:
         type: string
         default: phonebook
   steps:
+    - name: folder
+      image: alpine
+      command: ["pwd"]
+    - name: view
+      image: alpine
+      command: ["ls", "-al","./source/cloud-api"]
     - name: update-yaml
       image: alpine
       command: ["sed"]
@@ -24,9 +30,9 @@ spec:
         - "-i"
         - "-e"
         - "s;image-registry.openshift-image-registry.svc:5000/default/myservice:latest;$(inputs.resources.image.url);g"
-        - "$(inputs.params.pathToContext)/cloud-api/aplication.yml"
+        - "$(inputs.params.pathToContext)/cloud-api/application.yaml"
     - name: oc-apply
       image: quay.io/openshift/origin-cli:latest
       command: ["/bin/bash", "-c"]
       args:
-        - oc apply -f $(inputs.params.pathToContext)/cloud-api/aplication.yml -n $(inputs.params.targetNamespace)
+        - oc apply -f $(inputs.params.pathToContext)/cloud-api/application.yaml -n $(inputs.params.targetNamespace)

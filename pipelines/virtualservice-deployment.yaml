@@ -1,7 +1,7 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: deploy-gateway
+  name: deploy-virtualservice
 spec:
   inputs:
     resources:
@@ -28,7 +28,7 @@ spec:
         - "-i"
         - "-e"
         - "s;frontend.;$(inputs.params.subdomain);g"
-        - "$(inputs.params.pathToContext)/cloud-api/gateway.yaml"
+        - "$(inputs.params.pathToContext)/cloud-api/virtual-service.yaml"
     - name: update-yaml-2
       image: alpine
       command: ["sed"]
@@ -36,9 +36,9 @@ spec:
         - "-i"
         - "-e"
         - "s;192.168.64.2.nip.io;$(inputs.params.domain);g"
-        - "$(inputs.params.pathToContext)/cloud-api/gateway.yaml"
+        - "$(inputs.params.pathToContext)/cloud-api/virtual-service.yaml"
     - name: oc-apply
       image: quay.io/openshift/origin-cli:latest
       command: ["/bin/bash", "-c"]
       args:
-        - oc apply -f $(inputs.params.pathToContext)/cloud-api/gateway.yaml -n $(inputs.params.targetNamespace)
+        - oc apply -f $(inputs.params.pathToContext)/cloud-api/virtual-service.yaml -n $(inputs.params.targetNamespace)

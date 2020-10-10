@@ -48,3 +48,17 @@ spec:
       value: "$(params.domain)"
     - name: subdomain
       value: "$(params.subdomain)"
+  - name: deploy-virtualservice
+    taskRef:
+      name: deploy-virtualservice
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: domain
+      value: "$(params.domain)"
+    - name: subdomain
+      value: "$(params.subdomain)"

@@ -41,10 +41,10 @@ spec:
         - "-i"
         - "-e"
         - "s;-frontend-;-$(inputs.params.subdomain)-;g"
-        - "$(inputs.params.pathToContext)/cloud-api/gateway-patch.json"
+        - "$(inputs.params.pathToContext)/$(inputs.params.subdomain)/gateway-patch.json"
     - name: oc-patch
       image: quay.io/openshift/origin-cli:latest
       command: ["/bin/bash", "-c"]
       args:
-        - oc patch -n $(inputs.params.meshNamespace) --type='json' deploy istio-ingressgateway -p "$(cat $(inputs.params.pathToContext)/cloud-api/gateway-patch.json)"
+        - oc patch -n $(inputs.params.meshNamespace) --type='json' deploy istio-ingressgateway -p "$(cat $(inputs.params.pathToContext)/$(inputs.params.subdomain)/gateway-patch.json)"
 

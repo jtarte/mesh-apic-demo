@@ -12,7 +12,7 @@ spec:
       protocol: HTTPS
     tls:
       mode: SIMPLE
-      serverCertificate: /etc/istio/ingressgateway-frontend-certs/tls.crt
-      privateKey: /etc/istio/ingressgateway-frontend-certs/tls.key
+      serverCertificate: /etc/istio/ingressgateway-cloud-frontend-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-cloud-frontend-certs/tls.key
     hosts:
     - "cloud-frontend.192.168.64.2.nip.io"

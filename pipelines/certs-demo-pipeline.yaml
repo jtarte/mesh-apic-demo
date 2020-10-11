@@ -6,21 +6,16 @@ spec:
   resources:
     - name: source
       type: git
-    - name: image
-      type: image
   params:
     - name: meshNamespace
       description: the namespace of the service mesh 
       default: istio-system
     - name: targetNamespace
       description: the name of target namespace where the deployment is done
-      default: cloud-api
     - name: domain
       description: the name of target namespace where the deployment is done
-      default: 192.168.64.2.nip.io
     - name: subdomain
       description: the name of target namespace where the deployment is done
-      default: cloud-api  
   tasks:
   - name: manage-certificates
     taskRef:

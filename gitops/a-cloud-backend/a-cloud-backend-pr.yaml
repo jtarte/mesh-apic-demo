@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: ei-cloud-backend
+  name: a-cloud-backend
 spec:
   params:
   - name: pathToContext

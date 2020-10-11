@@ -1,29 +1,29 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: deploy-gateway
 spec:
-  inputs:
-    resources:
+  resources:
+    inputs:
       - name: source
         type: git
-    params:
-      - name: pathToContext
-        type: string
-        default: /workspace/source
-      - name: targetNamespace
-        type: string
-        default: cloud-api
-      - name: subdomain
-        type: string
-        default: cloud-api
-      - name: domain
-        type: string
-        default: cloud-api
-      - name: yamlFile
-        type: string 
-      - name: genericName
-        type: string
+  params:
+    - name: pathToContext
+      type: string
+      default: /workspace/source
+    - name: targetNamespace
+      type: string
+      default: cloud-api
+    - name: subdomain
+      type: string
+      default: cloud-api
+    - name: domain
+      type: string
+      default: cloud-api
+    - name: yamlFile
+      type: string 
+    - name: genericName
+      type: string
   steps:
     - name: update-yaml
       image: alpine

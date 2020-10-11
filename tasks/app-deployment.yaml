@@ -1,27 +1,27 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: deploy-app
 spec:
-  inputs:
-    resources:
+  resources:
+    inputs :
       - name: source
         type: git
       - name: image
         type: image
-    params:
-      - name: pathToContext
-        type: string
-        default: /workspace/source
-      - name: targetNamespace
-        type: string
-        default: phonebook
-      - name: subdomain
-        type: string
-      - name: yamlFile
-        type: string 
-      - name: genericName
-        type: string
+  params:
+    - name: pathToContext
+      type: string
+      default: /workspace/source
+    - name: targetNamespace
+      type: string
+      default: phonebook
+    - name: subdomain
+      type: string
+    - name: yamlFile
+      type: string 
+    - name: genericName
+      type: string
   steps:
     - name: update-yaml
       image: alpine

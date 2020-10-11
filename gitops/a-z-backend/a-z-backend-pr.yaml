@@ -1,25 +1,19 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: ei-cloud-frontend
+  name: ei-z-backend
 spec:
   params:
   - name: pathToContext
     value: /workspace/docker-source
   - name: targetNamespace
-    value: ei-cloud-frontend
+    value: a-z-backend
   - name: domain
     value: 192.168.64.2.nip.io
   - name: subdomain
-    value: cloud-frontend
-  - name: genericName
-    value: cloud-frontend
-  - name: hostBackend
-    value: cloud-backend.192.168.64.2.nip.io
-  - name: hostLegacy
-    value: z-backend.192.168.64.2.nip.io
+    value: z-backend
   pipelineRef:
-    name: deploy-project
+    name: deploy-legacy
   resources:
   - name: source
     resourceRef:

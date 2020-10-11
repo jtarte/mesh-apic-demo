@@ -100,6 +100,10 @@ test
 curl  http://cloud-backend.192.168.64.2.nip.io/invoke
 ``` 
 
+```
+curl --cacert ca-cert/192.168.64.2.nip.io.crt https://cloud-frontend.192.168.64.2.nip.io/invoke
+curl -H "mode:gold" --cacert ca-cert/192.168.64.2.nip.io.crt https://cloud-frontend.192.168.64.2.nip.io/invoke
+```
 
 
 

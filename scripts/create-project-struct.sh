@@ -7,6 +7,10 @@ PIPELINE=a-pipeline-mesh
 MESH1=istio-system
 MESH2=istio-system2
 
+DIRECTORY=mesh-apic-demo
+MYPATH=$(pwd | sed 's/\('$DIRECTORY'\).*/\1/g')
+
+
 #create the project
 echo "Create projects"
 oc new-project $FRONTEND
@@ -20,6 +24,11 @@ echo "add project to mesh controll plane"
 oc patch smmr default -n $MESH1 --type='json' -p '[{"op": "add", "path": "/spec/members", "value":["'"$BACKEND"'"]}]' 
 
 oc patch smmr default -n $MESH2 --type='json' -p '[{"op": "add", "path": "/spec/members", "value":["'"$FRONTEND"'"]}]' 
+
+#add activate mtls on istio-system2
+echo "activate mtls on" $MESH2
+oc apply $MYPATH/mtls/mtls.yaml -n $MESH2
+
 
 #provide priviledges to pipelines
 echo "provide privilege to pipeline service account to run pipeline on target projects"

@@ -12,15 +12,15 @@ spec:
     - name: targetNamespace
       description: the name of target namespace where the deployment is done
     - name: domain
-      description: the name of target namespace where the deployment is done
+      description: the domain used for service host (ex.192.168.64.2.nip.io)
     - name: subdomain
-      description: the name of target namespace where the deployment is done 
+      description: the subdomain of the service host (ex cloud-frontend) 
     - name: genericName
-      description: the name of target namespace where the deployment is done
+      description: the string to be replace on script
     - name: hostBackend
-      description: host of backend service
+      description: the host of cloud backend service
     - name: hostLegacy
-      description: host of backend service
+      description: the host of legacy service
   tasks:
   - name: deploy-app
     taskRef:
@@ -36,6 +36,8 @@ spec:
       value: "$(params.targetNamespace)"
     - name: subdomain
       value: "$(params.subdomain)"
+    - name: domain
+      value: "$(params.domain)"
     - name: yamlFile
       value: "$(params.genericName)/application.yaml"
     - name: genericName

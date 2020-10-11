@@ -24,13 +24,13 @@ spec:
       image: centurylink/openssl
       script: |
         #!/usr/bin/env sh
-        cd $(inputs.params.pathToContext)/$(inputs.params.genericName)
-        openssl req -out $(inputs.params.subdomain).$(inputs.params.domain).csr -newkey rsa:2048 -nodes -keyout $(inputs.params.subdomain).$(inputs.params.domain).key -subj "/CN=$(inputs.params.subdomain).$(inputs.params.domain)/O=$(inputs.params.subdomain) subdomain od $(inputs.params.domain) for istio demo"
-        openssl x509 -req -days 365 -CA ../ca-cert/$(inputs.params.domain).crt -CAkey ../ca-cert/$(inputs.params.domain).key -set_serial 0 -in $(inputs.params.subdomain).$(inputs.params.domain).csr -out $(inputs.params.subdomain).$(inputs.params.domain).crt
+        cd $(params.pathToContext)/$(params.genericName)
+        openssl req -out $(params.subdomain).$(params.domain).csr -newkey rsa:2048 -nodes -keyout $(params.subdomain).$(params.domain).key -subj "/CN=$(params.subdomain).$(params.domain)/O=$(params.subdomain) subdomain od $(params.domain) for istio demo"
+        openssl x509 -req -days 365 -CA ../ca-cert/$(params.domain).crt -CAkey ../ca-cert/$(params.domain).key -set_serial 0 -in $(params.subdomain).$(params.domain).csr -out $(params.subdomain).$(params.domain).crt
     - name: create-route
       image: quay.io/openshift/origin-cli:latest
       command: ["/bin/bash", "-c"]
       args: 
-      - oc create route edge --service=service-$(inputs.params.subdomain)-a -n $(inputs.params.targetNamespace) --hostname=$(inputs.params.subdomain).$(inputs.params.domain) --key=$(inputs.params.pathToContext)/$(inputs.params.genericName)/$(inputs.params.subdomain).$(inputs.params.domain).key --cert=$(inputs.params.pathToContext)/$(inputs.params.genericName)/$(inputs.params.subdomain).$(inputs.params.domain).crt --insecure-policy=Redirect
+      - oc create route edge --service=service-$(params.subdomain)-a -n $(params.targetNamespace) --hostname=$(params.subdomain).$(params.domain) --key=$(params.pathToContext)/$(params.genericName)/$(params.subdomain).$(params.domain).key --cert=$(params.pathToContext)/$(params.genericName)/$(params.subdomain).$(params.domain).crt --insecure-policy=Redirect
 
 

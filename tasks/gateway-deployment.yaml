@@ -31,18 +31,18 @@ spec:
       args:
         - "-i"
         - "-e"
-        - "s;$(inputs.params.genericName);$(inputs.params.subdomain);g"
-        - "$(inputs.params.pathToContext)/$(inputs.params.yamlFile)"
+        - "s;$(params.genericName);$(params.subdomain);g"
+        - "$(params.pathToContext)/$(params.yamlFile)"
     - name: update-yaml-2
       image: alpine
       command: ["sed"]
       args:
         - "-i"
         - "-e"
-        - "s;192.168.64.2.nip.io;$(inputs.params.domain);g"
-        - "$(inputs.params.pathToContext)/$(inputs.params.yamlFile)"
+        - "s;192.168.64.2.nip.io;$(params.domain);g"
+        - "$(params.pathToContext)/$(params.yamlFile)"
     - name: oc-apply
       image: quay.io/openshift/origin-cli:latest
       command: ["/bin/bash", "-c"]
       args:
-        - oc apply -f $(inputs.params.pathToContext)/$(inputs.params.yamlFile) -n $(inputs.params.targetNamespace)
+        - oc apply -f $(params.pathToContext)/$(params.yamlFile) -n $(params.targetNamespace)

@@ -13,9 +13,9 @@ spec:
     - name: targetNamespace
       description: the name of target namespace where the deployment is done
     - name: domain
-      description: the name of target namespace where the deployment is done
+      description: the domain used for service host (ex.192.168.64.2.nip.io)
     - name: subdomain
-      description: the name of target namespace where the deployment is done
+      description: the subdomain of the service host (ex cloud-frontend) 
   tasks:
   - name: manage-certificates
     taskRef:

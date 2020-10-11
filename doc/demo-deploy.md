@@ -73,7 +73,7 @@ oc apply -n a-pipeline-mesh -f gitops/$CLUSTER/a-z-backend/a-z-backend-pr.yaml
 ```  
 test
 ```
-curl --cacert ca-cert/192.168.64.2.nip.io.crt https://z-backend.192.168.64.2.nip.io/invoke
+gitops/$CLUSTER/test_legacy.sh 1
 ``` 
 
 ### Deploy Cloud backend app
@@ -93,7 +93,7 @@ oc apply -n a-pipeline-mesh -f gitops/$CLUSTER/a-cloud-frontend/a-cloud-frontend
 
 
 ```
-oc apply -n a-pipeline-mesh -f gitops/$CLUSTER/a-cloud-frontend/a-front-backend-pr.yaml
+oc apply -n a-pipeline-mesh -f gitops/$CLUSTER/a-cloud-frontend/a-cloud-frontend-pr.yaml
 ``` 
 test
 ```

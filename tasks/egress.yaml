@@ -27,10 +27,10 @@ spec:
       args:
         - "-i"
         - "-e"
-        - "s;$(input.params.oldHost);$(inputs.params.host);g"
-        - "$(inputs.params.pathToContext)/$(inputs.params.yamlFile)"
+        - "s;$(params.oldHost);$(params.host);g"
+        - "$(params.pathToContext)/$(params.yamlFile)"
     - name: oc-apply
       image: quay.io/openshift/origin-cli:latest
       command: ["/bin/bash", "-c"]
       args:
-        - oc apply -f $(inputs.params.pathToContext)/$(inputs.params.yamlFile) -n $(inputs.params.targetNamespace)
+        - oc apply -f $(params.pathToContext)/$(params.yamlFile) -n $(params.targetNamespace)

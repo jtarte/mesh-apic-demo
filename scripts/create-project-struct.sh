@@ -27,7 +27,7 @@ oc patch smmr default -n $MESH2 --type='json' -p '[{"op": "add", "path": "/spec/
 
 #add activate mtls on istio-system2
 echo "activate mtls on" $MESH2
-oc apply $MYPATH/mtls/mtls.yaml -n $MESH2
+oc apply -f $MYPATH/mtls/mtls.yaml -n $MESH2
 
 
 #provide priviledges to pipelines

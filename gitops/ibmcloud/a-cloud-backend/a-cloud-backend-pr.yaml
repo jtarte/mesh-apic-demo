@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: a-cloud-backend
+spec:
+  params:
+  - name: pathToContext
+    value: /workspace/docker-source
+  - name: targetNamespace
+    value: a-cloud-backend
+  - name: domain
+    value: 159.8.94.146.nip.io
+  - name: subdomain
+    value: cloud-backend
+  - name: genericName
+    value: cloud-backend
+  pipelineRef:
+    name: deploy-backend
+  resources:
+  - name: source
+    resourceRef:
+      name: mesh-apic-demo-git
+  - name: image
+    resourceRef:
+      name: myservice-image

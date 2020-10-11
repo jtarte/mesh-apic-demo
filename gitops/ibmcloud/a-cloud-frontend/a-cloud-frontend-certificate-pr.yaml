@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: a-cloud-frontend-certificate
+spec:
+  params:
+  - name: pathToContext
+    value: /workspace/docker-source
+  - name: targetNamespace
+    value: a-cloud-frontend
+  - name: domain
+    value: 159.8.94.146.nip.io
+  - name: subdomain
+    value: cloud-frontend
+  - name: genericName
+    value: cloud-frontend
+  - name: meshNamespace
+    value: istio-system2
+  pipelineRef:
+    name: certs-project
+  resources:
+  - name: source
+    resourceRef:
+      name: mesh-apic-demo-git

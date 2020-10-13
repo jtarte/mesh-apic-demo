@@ -1,0 +1,47 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: apic-cli
+spec:
+  resources:
+    inputs :
+      - name: source
+        type: git
+  params:
+    - name: server
+      type: string
+    - name: ARGS
+      type: string
+    - name: verb
+      type: string
+  steps:
+    - command:
+        - /bin/bash
+        - '-c'
+        - echo $(apic login --accept-license --server $(params.server) --username $USERNAME --password $PASSWORD --realm $REALM )
+      image: 'jtarte/apic:latest'
+      name: login
+      resources: {}
+      env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: apic-creds
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: apic-creds
+              key: password 
+        - name: REALM
+          valueFrom:
+            secretKeyRef:
+              name: apic-creds
+              key: realm 
+    - command:
+        - /bin/bash
+        - '-c'
+        - echo $(apic $(params.verb) --server $(params.server) --accept-license $(params.ARGS))
+      image: 'jtarte/apic:latest'
+      name: command
+      resources: {}

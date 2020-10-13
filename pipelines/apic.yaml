@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline 
+metadata:
+  name: apic
+spec:
+  resources:
+    - name: source
+      type: git
+  params:
+    - name: server
+      default: api.mycluster-par01-c3c-16x32-bab45e8004bc87ecf7bae04a5ef90ae7-0000.par01.containers.appdomain.cloud
+    - name: apic_org
+      default: org1
+    - name: swagger
+      default: cloud-frontend/enhanced-cloud-frontend-swagger.yaml
+  tasks:
+  - name: deploy-api
+    taskRef:
+      name: apic-cli
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: ARGS
+      value: "--org $(params.apic_org) /workspace/source/$(params.swagger)"
+    - name: verb 
+      value: draft-apis:create
+    - name: server
+      value: $(params.server)

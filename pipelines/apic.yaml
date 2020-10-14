@@ -13,6 +13,8 @@ spec:
       default: org1
     - name: swagger
       default: cloud-frontend/enhanced-cloud-frontend-swagger.yaml
+    - name: product
+      default: cloud-frontend/product.yaml
   tasks:
   - name: deploy-api
     taskRef:
@@ -26,5 +28,21 @@ spec:
       value: "--org $(params.apic_org) /workspace/source/$(params.swagger)"
     - name: verb 
       value: draft-apis:create
+    - name: server
+      value: $(params.server)
+  - name: deploy-product
+    taskRef:
+      name: apic-cli
+    runAfter:
+        - deploy-api
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: ARGS
+      value: "--org $(params.apic_org) /workspace/source/$(params.product)"
+    - name: verb 
+      value: draft-products:create
     - name: server
       value: $(params.server)

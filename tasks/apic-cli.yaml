@@ -2,24 +2,33 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: apic-cli
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/tags: cli
+    tekton.dev/displayName: "apic cli"
 spec:
+  description: This task performs operations with apic cli on an APIC instance (endpoint provided as params). 
   resources:
     inputs :
       - name: source
         type: git
   params:
     - name: server
-      type: string
-    - name: ARGS
+      description: The APIC server endpoint
       type: string
     - name: verb
+      description: the verb used in the apic command (draft-apis:create, draft-products:list-all, ....) 
+      type: string
+    - name: ARGS
+      description: the parameters of the commands except the --server that is given by the server params of the tasks
       type: string
   steps:
     - command:
         - /bin/bash
         - '-c'
-        - echo $(apic login --accept-license --server $(params.server) --username $USERNAME --password $PASSWORD --realm $REALM )
-      image: 'jtarte/apic:latest'
+        - apic login --accept-license --server $(params.server) --username $USERNAME --password $PASSWORD --realm $REALM
+      image: 'jtarte/apic-cli:latest'
       name: login
       resources: {}
       env:
@@ -41,7 +50,7 @@ spec:
     - command:
         - /bin/bash
         - '-c'
-        - echo $(apic $(params.verb) --server $(params.server) --accept-license $(params.ARGS))
-      image: 'jtarte/apic:latest'
+        - apic $(params.verb) --server $(params.server) --accept-license $(params.ARGS)
+      image: 'jtarte/apic-cli:latest'
       name: command
       resources: {}

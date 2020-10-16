@@ -67,14 +67,18 @@ spec:
   - name: create-test-app
     taskRef:
       name: apic-api-test
+    runAfter:
+        - publish-product
     resources:
       inputs:
         - name: source
           resource: source
     params:
-    - name: ARGS
-      value: "--org $(params.apic_org) -c $(params.catalog) /workspace/source/$(params.product)"
-    - name: verb 
-      value: products:publish
     - name: server
       value: $(params.server)  
+    - name: org
+      value: $(params.apic_org) 
+    - name: catalog
+      value: $(params.catalog) 
+    - name: consumer_org
+      value: jerome-tarte 

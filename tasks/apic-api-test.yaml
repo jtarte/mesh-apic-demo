@@ -50,14 +50,21 @@ spec:
     - command:
         - /bin/bash
         - '-c'
-        - apic apps:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) --debug --format json /workspace/source/apic/test-app-org.yaml > app_result.json
+        - apic apps:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) --debug --format json /workspace/source/apic/test-app.yaml > app_result.json
       image: 'jtarte/apic-cli:latest'
       name: create-app
       resources: {}
     - command:
         - /bin/bash
         - '-c'
-        - apic subscriptions:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) -a test-app workspace/source/apic/subs.yaml 
+        - apic subscriptions:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) -a test-app /workspace/source/apic/subs.yaml 
+      image: 'jtarte/apic-cli:latest'
+      name: prepare-api-subscription
+      resources: {}
+    - command:
+        - /bin/bash
+        - '-c'
+        - apic subscriptions:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) -a test-app /workspace/source/apic/subs.yaml 
       image: 'jtarte/apic-cli:latest'
       name: create-api-subscription
       resources: {}
@@ -66,6 +73,6 @@ spec:
         - '-c'
         - echo $(echo app_result.json | jq '.client_id' -r)
       image: 'jtarte/apic-cli:latest'
-      name: test-api-
+      name: test-api
       resources: {}
 

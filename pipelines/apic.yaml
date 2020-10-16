@@ -83,6 +83,6 @@ spec:
     - name: consumer_org
       value: jerome-tarte 
     - name: app
-      value: test_app
+      value: test-app
     - name: app_id
       value: b349b23c1ccc34e9903bb4d178bd34b8

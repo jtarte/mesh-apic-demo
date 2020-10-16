@@ -12,9 +12,11 @@ spec:
     - name: apic_org
       default: org1
     - name: swagger
-      default: cloud-frontend/enhanced-cloud-frontend-swagger.yaml
+      default: cloud-frontend/cloudfrontend-svc_1.0.0.yaml
     - name: product
-      default: cloud-frontend/product.yaml
+      default: cloud-frontend/cloudfrontendproduct_1.0.0.yaml
+    - name: catalog
+      default: sandbox
   tasks:
   - name: deploy-api
     taskRef:
@@ -46,3 +48,35 @@ spec:
       value: draft-products:create
     - name: server
       value: $(params.server)
+  - name: publish-product
+    taskRef:
+      name: apic-cli
+    runAfter:
+        - deploy-product
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: ARGS
+      value: "--org $(params.apic_org) -c $(params.catalog) /workspace/source/$(params.product)"
+    - name: verb 
+      value: products:publish
+    - name: server
+      value: $(params.server)  
+  - name: create-test-app
+    taskRef:
+      name: apic-cli
+    runAfter:
+        - deploy-product
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: ARGS
+      value: "--org $(params.apic_org) -c $(params.catalog) /workspace/source/$(params.product)"
+    - name: verb 
+      value: products:publish
+    - name: server
+      value: $(params.server)  

@@ -1,0 +1,56 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: apic-api-test
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/tags: cli
+    tekton.dev/displayName: "apic cli"
+spec:
+  description: This task performs operations the test of publish API. 
+  resources:
+    inputs :
+      - name: source
+        type: git
+  params:
+    - name: server
+      description: The APIC server endpoint
+      type: string
+    - name: org
+      type: string
+    - name: catalog
+      type: string
+    - name: consumer_org
+      type: string
+  steps:
+    - command:
+        - /bin/bash
+        - '-c'
+        - apic login --accept-license --server $(params.server) --username $USERNAME --password $PASSWORD --realm $REALM
+      image: 'jtarte/apic-cli:latest'
+      name: login
+      resources: {}
+      env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: apic-creds
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: apic-creds
+              key: password 
+        - name: REALM
+          valueFrom:
+            secretKeyRef:
+              name: apic-creds
+              key: realm 
+    - command:
+        - /bin/bash
+        - '-c'
+        - apic apps:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) --debug --format json /workspace/source/apic/test-app-org.yaml > app_result.json
+      image: 'jtarte/apic-cli:latest'
+      name: create-appp
+      resources: {}

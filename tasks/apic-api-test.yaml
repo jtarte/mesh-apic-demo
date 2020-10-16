@@ -23,6 +23,10 @@ spec:
       type: string
     - name: consumer_org
       type: string
+    - name: app 
+      type: string
+    - name: app_id
+      type: string
   steps:
     - command:
         - /bin/bash
@@ -50,29 +54,26 @@ spec:
     - command:
         - /bin/bash
         - '-c'
-        - apic apps:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) --debug --format json /workspace/source/apic/test-app.yaml > app_result.json
-      image: 'jtarte/apic-cli:latest'
-      name: create-app
-      resources: {}
-    - command:
-        - /bin/bash
-        - '-c'
-        - apic subscriptions:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) -a test-app /workspace/source/apic/subs.yaml 
+        - cat /workspace/source/apic/subs-org.yaml | sed "s#TARGET_PRODUCT#$(apic products:list -s $(params.server) -o org1 -c sandbox --scope catalog cloudfrontendproduct | grep cloudfrontendproduct:1.0.0 | awk -F ' ' '{print $4}')#g" > /workspace/source/apic/subs.yaml
       image: 'jtarte/apic-cli:latest'
       name: prepare-api-subscription
       resources: {}
     - command:
         - /bin/bash
         - '-c'
-        - apic subscriptions:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) -a test-app /workspace/source/apic/subs.yaml 
+        - apic subscriptions:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) -a $(params.app) /workspace/source/apic/subs.yaml 
       image: 'jtarte/apic-cli:latest'
       name: create-api-subscription
       resources: {}
-    - command:
-        - /bin/bash
-        - '-c'
-        - echo $(echo app_result.json | jq '.client_id' -r)
+    - name: sleep-5
+      image: ubuntu
+      script: | 
+        #!/usr/bin/env bash
+        sleep 5
+    - command: 
+        - /workspace/source/apic/test-endpoint.sh
+        - https://gw.mycluster-par01-c3c-16x32-bab45e8004bc87ecf7bae04a5ef90ae7-0000.par01.containers.appdomain.cloud/org1/sandbox/cloudfrontend-svc/v1/invoke
+        - $(params.app_id)
       image: 'jtarte/apic-cli:latest'
       name: test-api
       resources: {}
-

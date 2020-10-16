@@ -52,5 +52,20 @@ spec:
         - '-c'
         - apic apps:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) --debug --format json /workspace/source/apic/test-app-org.yaml > app_result.json
       image: 'jtarte/apic-cli:latest'
-      name: create-appp
+      name: create-app
       resources: {}
+    - command:
+        - /bin/bash
+        - '-c'
+        - apic subscriptions:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) -a test-app workspace/source/apic/subs.yaml 
+      image: 'jtarte/apic-cli:latest'
+      name: create-api-subscription
+      resources: {}
+    - command:
+        - /bin/bash
+        - '-c'
+        - echo $(echo app_result.json | jq '.client_id' -r)
+      image: 'jtarte/apic-cli:latest'
+      name: test-api-
+      resources: {}
+

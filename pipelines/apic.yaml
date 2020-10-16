@@ -66,9 +66,7 @@ spec:
       value: $(params.server)  
   - name: create-test-app
     taskRef:
-      name: apic-cli
-    runAfter:
-        - deploy-product
+      name: apic-api-test
     resources:
       inputs:
         - name: source

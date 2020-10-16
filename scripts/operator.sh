@@ -1,11 +1,14 @@
 function clean_operator
 {
     echo "removing" $1 "operator"
+    # get the CSV associated to the operator suscription
     RESOURCE=$(oc get subscription $1 -n openshift-operators -o template --template '{{.status.currentCSV}}')
     if [ "$RESOURCE" != "<no value>" ]
     then 
+        # delete the subscription
         oc delete subscription $1 -n $NAMESPACE
         sleep 1
+        # delete the associate CSV
         oc delete clusterserviceversion $RESOURCE -n $NAMESPACE
         echo $1 "operator is removed from environment"
     fi
@@ -14,6 +17,7 @@ function clean_operator
 
 function deploy_operator()
 {
+    # Create the operator subscription
     oc apply -f $1 -n $NAMESPACE
 
     sleep 2

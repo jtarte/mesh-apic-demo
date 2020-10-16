@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline 
+metadata:
+  name: apic-api-test
+spec:
+  resources:
+    - name: source
+      type: git
+  params:
+    - name: server
+      default: api.mycluster-par01-c3c-16x32-bab45e8004bc87ecf7bae04a5ef90ae7-0000.par01.containers.appdomain.cloud
+    - name: apic_org
+      default: org1
+    - name: swagger
+      default: cloud-frontend/cloudfrontend-svc_1.0.0.yaml
+    - name: product
+      default: cloud-frontend/cloudfrontendproduct_1.0.0.yaml
+    - name: catalog
+      default: sandbox
+    - name: consumer_org
+      default: jerome-tarte
+    - name: app
+      default: test-app
+    - name: app_id
+      default: b349b23c1ccc34e9903bb4d178bd34b8
+  tasks:
+  - name: create-test-api
+    taskRef:
+      name: apic-api-test
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: server
+      value: $(params.server)  
+    - name: org
+      value: $(params.apic_org) 
+    - name: catalog
+      value: $(params.catalog) 
+    - name: consumer_org
+      value: $(params.consumer_org)  
+    - name: app
+      value: $(params.app) 
+    - name: app_id
+      value: $(params.app_id) 

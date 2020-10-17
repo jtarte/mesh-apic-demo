@@ -12,8 +12,8 @@ spec:
       value: org1
     - name: swagger
       value: cloud-frontend/cloudfrontend-svc_1.0.0.yaml
-    - name: product
-      value: cloud-frontend/cloudfrontendproduct_1.0.0.yaml
+    - name: product-template
+      value: template_a
     - name: catalog
       value: sandbox
     - name: consumer_org
@@ -26,6 +26,10 @@ spec:
       value: https://gw.mycluster-par01-c3c-16x32-bab45e8004bc87ecf7bae04a5ef90ae7-0000.par01.containers.appdomain.cloud/org1/sandbox
     - name: uri
       value: cloudfrontend-svc/v1/invoke
+    - name: service 
+      value: cloud-frontend 
+    - name: version 
+      value: "1.0.0"
   pipelineRef:
     name: apic
   resources:

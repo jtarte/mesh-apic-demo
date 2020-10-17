@@ -1,0 +1,26 @@
+info:
+  version: #VERSION#
+  title: #NAME#
+  name: #NAME#
+gateways:
+- datapower-api-gateway
+plans:
+  default-plan:
+    title: Default Plan
+    description: Default Plan
+    approval: false
+apis:
+  #SERVICE#-#VERSION:
+    $ref: #SWAGGER#
+visibility:
+  view:
+    type: public
+    orgs: []
+    tags: []
+    enabled: true
+  subscribe:
+    type: authenticated
+    orgs: []
+    tags: []
+    enabled: true
+product: #VERSION#

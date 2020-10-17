@@ -1,0 +1,29 @@
+info:
+  version: #VERSION#
+  title: #NAME#
+  name: #NAME#
+gateways:
+- datapower-api-gateway
+plans:
+  default-plan:
+    rate-limits:
+      default:
+        value: 10/1hour
+    title: Default Plan
+    description: Default Plan
+    approval: false
+apis:
+  #SERVICE#-#VERSION:
+    $ref: #SWAGGER#
+visibility:
+  view:
+    type: public
+    orgs: []
+    tags: []
+    enabled: true
+  subscribe:
+    type: authenticated
+    orgs: []
+    tags: []
+    enabled: true
+product: #VERSION#

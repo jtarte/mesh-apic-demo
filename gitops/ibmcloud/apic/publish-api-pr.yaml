@@ -11,9 +11,9 @@ spec:
     - name: apic_org
       value: org1
     - name: swagger
-      value: cloud-frontend/cloudfrontend-svc_1.0.0.yaml
+      value: gitops/ibmcloud/a-cloud-frontend/cloud-frontend-svc_1.0.0.yaml
     - name: product
-      value: cloud-frontend/cloudfrontendproduct_1.0.0.yaml
+      value: gitops/ibmcloud/a-cloud-frontend/cloud-frontend-product_1.0.0.yaml
     - name: catalog
       value: sandbox
     - name: consumer_org

@@ -87,9 +87,9 @@ spec:
     - name: app_id
       value: $(params.app_id)
     - name: product
-      value: cloudfrontendproduct
+      value: $(params.service)-product
     - name: productVersion
-      value: "1.0.0"
+      value: $(params.version)
     - name: gateway
       value: $(params.gateway)
     - name: uri

@@ -8,8 +8,8 @@ app=test-app
 
 apic subscriptions:delete -s $server -o $org -c $catalog --consumer-org $consumerorg -a $app $( apic subscriptions:list -s $server -o $org -c $catalog --consumer-org $consumerorg -a $app | awk -F ' ' '{print $1}')
 
-apic products:delete --scope catalog -s $server -o $org -c $catalog cloudfrontendproduct:1.0.0
+apic products:delete --scope catalog -s $server -o $org -c $catalog cloud-frontend-product:1.0.0
 
-apic draft-products:delete -s $server -o $org cloudfrontendproduct:1.0.0
+apic draft-products:delete -s $server -o $org cloud-frontend-product:1.0.0
 
-apic draft-apis:delete -s $server -o $org cloudfrontend-svc:1.0.0
+apic draft-apis:delete -s $server -o $org cloud-frontend-svc:1.0.0

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-frontend-c-v2
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-frontend-c
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-frontend-c
+        purpose: istio-demo
+        version: v2
+    spec:
+      containers:
+        - name: service-cloud-frontend-c
+          image: image-registry.openshift-image-registry.svc:5000/default/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-cloud-frontend-c
+            - name: VERSION
+              value: v2
+            - name: TARGET
+              value: z-backend.192.168.64.2.nip.io 

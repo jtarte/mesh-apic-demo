@@ -1,0 +1,62 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: internal-service-upgrade
+spec:
+  resources:
+    - name: source
+      type: git
+    - name: image
+      type: image
+  params:
+    - name: targetNamespace
+      description: the name of target namespace where the deployment is done
+    - name: domain
+      description: the domain used for service host (ex.192.168.64.2.nip.io)
+    - name: subdomain
+      description: the subdomain of the service host (ex cloud-frontend) 
+    - name: genericName
+      description: the string to be replace on script
+    - name: hostBackend
+      description: the host of cloud backend service
+    - name: hostLegacy
+      description: the host of legacy service
+  tasks:
+  - name: deploy-app
+    taskRef:
+      name: deploy-app
+    resources:
+      inputs:
+        - name: source
+          resource: source
+        - name: image
+          resource: image
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: subdomain
+      value: "$(params.subdomain)"
+    - name: domain
+      value: "$(params.domain)"
+    - name: yamlFile
+      value: "$(params.genericName)/application-internal-upgrade.yaml"
+    - name: genericName
+      value: "$(params.genericName)"
+  - name: update-virtualservice
+    taskRef:
+      name: deploy-virtualservice
+    resources:
+      inputs:
+        - name: source
+          resource: source
+    params:
+    - name: targetNamespace
+      value: "$(params.targetNamespace)"
+    - name: domain
+      value: "$(params.domain)"
+    - name: subdomain
+      value: "$(params.subdomain)"
+    - name: yamlFile
+      value: "$(params.genericName)/virtual-service-internal-routing.yaml"
+    - name: genericName
+      value: "$(params.genericName)"

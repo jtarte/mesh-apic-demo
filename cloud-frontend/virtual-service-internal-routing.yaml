@@ -1,0 +1,34 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: service-cloud-frontend-c
+spec:
+  hosts:
+  - service-cloud-frontend-c
+  http:
+  - route:
+    - destination:
+        host: service-cloud-frontend-c
+        subset: v1
+      weight: 80
+    - destination:
+        host: service-cloud-frontend-c
+        subset: v2
+      weight: 20 
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: service-cloud-frontend-c
+spec:
+  host: service-cloud-frontend-c
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2

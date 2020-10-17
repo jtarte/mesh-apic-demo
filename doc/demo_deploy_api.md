@@ -23,3 +23,6 @@ To run the pipeline, you could use the `Start`context menu on the pipeline in th
 oc apply -f 
 ```
 
+
+*Remarks: in this demo, I separated the deployment from the test phase. IT is a design choice for the demo. In real life, another options / choice, like putting all otgether in one pipeline, could be made.*
+

@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/version: "0.1"
   annotations:
     tekton.dev/tags: cli
-    tekton.dev/displayName: "apic cli"
+    tekton.dev/displayName: "apic api test"
 spec:
-  description: This task performs operations the test of publish API. 
+  description: This task performs operations to test published API. 
   resources:
     inputs :
       - name: source
@@ -18,14 +18,31 @@ spec:
       description: The APIC server endpoint
       type: string
     - name: org
+      description: the APIC organisation
       type: string
     - name: catalog
+      description: the targeted APIC catalog
       type: string
     - name: consumer_org
+      description: the consumer organisation used for the test
       type: string
     - name: app 
+      description: the app used for the test (subscription)
       type: string
     - name: app_id
+      description: the api key of the used app.
+      type: string
+    - name: product 
+      description: the name of the product
+      type: string
+    - name: productVersion
+      description: version of the targeted product
+      type: string
+    - name: gateway
+      description: the url of the API gateway
+      type: string
+    - name: uri
+      description: the uri for the test call
       type: string
   steps:
     - command:
@@ -51,29 +68,29 @@ spec:
             secretKeyRef:
               name: apic-creds
               key: realm 
-    - command:
+    - name: prepare-api-subscription
+      command:
         - /bin/bash
         - '-c'
-        - cat /workspace/source/apic/subs-org.yaml | sed "s#TARGET_PRODUCT#$(apic products:list -s $(params.server) -o org1 -c sandbox --scope catalog cloudfrontendproduct | grep cloudfrontendproduct:1.0.0 | awk -F ' ' '{print $4}')#g" > /workspace/source/apic/subs.yaml
+        - cat /workspace/source/apic/subs-org.yaml | sed "s#TARGET_PRODUCT#$(apic products:list -s $(params.server) -o $(params.org) -c $(params.catalog) --scope catalog $(params.product) | grep $(param.product):$(param.productVersion) | awk -F ' ' '{print $4}')#g" > /workspace/source/apic/subs.yaml
       image: 'jtarte/apic-cli:latest'
-      name: prepare-api-subscription
       resources: {}
-    - command:
+    - name: create-api-subscription
+      command:
         - /bin/bash
         - '-c'
         - apic subscriptions:create --server $(params.server) -o $(params.org) -c $(params.catalog) --consumer-org $(params.consumer_org) -a $(params.app) /workspace/source/apic/subs.yaml 
       image: 'jtarte/apic-cli:latest'
-      name: create-api-subscription
       resources: {}
-    - name: sleep-5
+    - name: sleep-10
       image: ubuntu
       script: | 
         #!/usr/bin/env bash
         sleep 10
-    - command: 
+    - name: test-api
+      command: 
         - /workspace/source/apic/test-endpoint.sh
-        - https://gw.mycluster-par01-c3c-16x32-bab45e8004bc87ecf7bae04a5ef90ae7-0000.par01.containers.appdomain.cloud/org1/sandbox/cloudfrontend-svc/v1/invoke
+        - $(params.gateway)/$(params.uri)
         - $(params.app_id)
       image: 'jtarte/apic-cli:latest'
-      name: test-api
       resources: {}

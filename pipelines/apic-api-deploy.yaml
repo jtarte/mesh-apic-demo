@@ -17,6 +17,14 @@ spec:
       default: cloud-frontend/cloudfrontendproduct_1.0.0.yaml
     - name: catalog
       default: sandbox
+    - name: consumer_org
+      default: jerome-tarte
+    - name: app
+      default: test-app
+    - name: app_id
+      default: b349b23c1ccc34e9903bb4d178bd34b8
+    - name: gateway
+    - name: uri
   tasks:
   - name: deploy-api
     taskRef:
@@ -81,8 +89,17 @@ spec:
     - name: catalog
       value: $(params.catalog) 
     - name: consumer_org
-      value: jerome-tarte 
+      value: $(params.consumer_org)
     - name: app
-      value: test-app
+      value: $(params.app)
     - name: app_id
-      value: b349b23c1ccc34e9903bb4d178bd34b8
+      value: $(params.app_id)
+    - name: product
+      value: cloudfrontendproduct
+    - name: productVersion
+      value: "1.0.0"
+    - name: gateway
+      value: $(params.gateway)
+    - name: uri
+      value: $(params.uri)
+    

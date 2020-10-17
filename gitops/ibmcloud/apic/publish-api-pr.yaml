@@ -1,0 +1,35 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: publish-api-pr
+  labels:
+    tekton.dev/pipeline: apic
+spec:
+  params:
+    - name: server
+      value: api.mycluster-par01-c3c-16x32-bab45e8004bc87ecf7bae04a5ef90ae7-0000.par01.containers.appdomain.cloud
+    - name: apic_org
+      value: org1
+    - name: swagger
+      value: cloud-frontend/cloudfrontend-svc_1.0.0.yaml
+    - name: product
+      value: cloud-frontend/cloudfrontendproduct_1.0.0.yaml
+    - name: catalog
+      value: sandbox
+    - name: consumer_org
+      value: jerome-tarte
+    - name: app
+      value: test-app
+    - name: app_id
+      value: b349b23c1ccc34e9903bb4d178bd34b8
+    - name: gateway
+      value: https://gw.mycluster-par01-c3c-16x32-bab45e8004bc87ecf7bae04a5ef90ae7-0000.par01.containers.appdomain.cloud/org1/sandbox
+    - name: uri
+      value: cloudfrontend-svc/v1/invoke
+  pipelineRef:
+    name: apic
+  resources:
+    - name: source
+      resourceRef:
+        name: mesh-apic-demo-git
+

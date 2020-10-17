@@ -2,6 +2,13 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: service-cloud-frondend-a
+  labels:
+    api_exposed: "true"
+  annotations:
+    api_version: v1.0.0 
+    api_name: cloud-frontend 
+    api_swagger: "gitops/ibmcloud/a-cloud-frontend/cloud-frontend-svc_1.0.0.yaml"
+    api_protocol: https 
 spec:
   hosts:
   - "cloud-frontend.192.168.64.2.nip.io"

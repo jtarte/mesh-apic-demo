@@ -45,6 +45,8 @@ spec:
   - name: update-virtualservice
     taskRef:
       name: deploy-virtualservice
+    runAfter:
+        - deploy-app
     resources:
       inputs:
         - name: source

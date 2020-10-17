@@ -1,0 +1,29 @@
+info:
+  version: 1.0.0
+  title: cloud-frontend-product
+  name: cloud-frontend-product
+gateways:
+- datapower-api-gateway
+plans:
+  default-plan:
+    rate-limits:
+      default:
+        value: 10/1hour
+    title: Default Plan
+    description: Default Plan
+    approval: false
+apis:
+  cloudfrontend-svc1.0.0:
+    $ref: cloud-frontend-svc_1.0.0.yaml
+visibility:
+  view:
+    type: public
+    orgs: []
+    tags: []
+    enabled: true
+  subscribe:
+    type: authenticated
+    orgs: []
+    tags: []
+    enabled: true
+product: 1.0.0

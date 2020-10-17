@@ -12,8 +12,8 @@ spec:
       value: org1
     - name: swagger
       value: cloud-frontend/cloudfrontend-svc_1.0.0.yaml
-    - name: product-template
-      value: template_a
+    - name: product
+      value: cloud-frontend/cloudfrontendproduct_1.0.0.yaml
     - name: catalog
       value: sandbox
     - name: consumer_org

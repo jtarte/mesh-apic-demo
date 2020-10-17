@@ -7,27 +7,16 @@ spec:
     - name: source
       type: git
   params:
-    - name: server
-      default: api.mycluster-par01-c3c-16x32-bab45e8004bc87ecf7bae04a5ef90ae7-0000.par01.containers.appdomain.cloud
+    - name: server  
     - name: apic_org
-      default: org1
     - name: swagger
-      default: cloud-frontend/cloudfrontend-svc_1.0.0.yaml
-    - name: product-template
-      default: template_a.yaml
+    - name: product
     - name: catalog
-      default: sandbox
     - name: consumer_org
-      default: jerome-tarte
     - name: app
-      default: test-app
     - name: app_id
-      default: b349b23c1ccc34e9903bb4d178bd34b8
     - name: gateway
     - name: uri
-    - name: service 
-    - name: version
-
   tasks:
   - name: deploy-api
     taskRef:
@@ -45,7 +34,7 @@ spec:
       value: $(params.server)
   - name: deploy-product
     taskRef:
-      name: apic-product
+      name: apic-cli
     runAfter:
         - deploy-api
     resources:
@@ -53,20 +42,12 @@ spec:
         - name: source
           resource: source
     params:
+    - name: ARGS
+      value: "--org $(params.apic_org) /workspace/source/$(params.product)"
+    - name: verb 
+      value: draft-products:create
     - name: server
       value: $(params.server)
-    - name: org
-      value: $(params.apic_org)
-    - name: product
-      value: $(params.service)-product
-    - name: swagger
-      value: $(params.swagger)
-    - name: service
-      value: $(params.service)
-    - name: template 
-      value: $(params.product-template)
-    - name: version
-      value: $(params.version)
   - name: publish-product
     taskRef:
       name: apic-cli
@@ -78,7 +59,7 @@ spec:
           resource: source
     params:
     - name: ARGS
-      value: "--org $(params.apic_org) -c $(params.catalog) /workspace/source/product.yaml"
+      value: "--org $(params.apic_org) -c $(params.catalog) /workspace/source/$(params.product)"
     - name: verb 
       value: products:publish
     - name: server

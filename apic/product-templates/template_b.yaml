@@ -13,7 +13,7 @@ plans:
     description: Default Plan
     approval: false
 apis:
-  #SERVICE#-#VERSION:
+  #SERVICE#-#VERSION#:
     $ref: #SWAGGER#
 visibility:
   view:

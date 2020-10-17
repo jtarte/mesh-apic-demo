@@ -1,5 +1,5 @@
 info:
-  version: 1.0.0
+  version: 2.0.0
   title: cloud-frontend-product
   name: cloud-frontend-product
 gateways:
@@ -13,8 +13,8 @@ plans:
     description: Default Plan
     approval: false
 apis:
-  cloud-frontend-svc1.0.0:
-    $ref: cloud-frontend-svc_1.0.0.yaml
+  cloud-frontend-svc2.0.0:
+    $ref: cloud-frontend-svc_2.0.0.yaml
 visibility:
   view:
     type: public
@@ -26,4 +26,4 @@ visibility:
     orgs: []
     tags: []
     enabled: true
-product: 1.0.0
+product: 2.0.0

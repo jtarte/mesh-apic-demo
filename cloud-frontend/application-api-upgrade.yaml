@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-frontend-a-v2
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-frontend-a
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-frontend-a
+        purpose: istio-demo
+        version: v2
+    spec:
+      containers:
+        - name: service-cloud-frontend-a-v2
+          image: jtarte/myservice:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              value: service-cloud-frontend-a
+            - name: VERSION
+              value: v2
+            - name: TARGET
+              value: service-cloud-frontend-b,service-cloud-frontend-c
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-cloud-frontend-e-v2
+  labels:
+    purpose: istio-demo
+spec:
+  selector:
+    matchLabels:
+      app: service-cloud-frontend-e
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: service-cloud-frontend-e
+        purpose: istio-demo
+        version: v2
+    spec:
+      containers:
+      - name: service-cloud-frontend-c-v2
+        image: jtarte/myservice:latest
+        imagePullPolicy: "Always"
+        ports:
+          - containerPort: 8080
+        env:
+          - name: NAME
+            value: service-cloud-frontend-e
+          - name: VERSION
+            value: v2
+          - name: TARGET
+            value: service-cloud-frontend-d

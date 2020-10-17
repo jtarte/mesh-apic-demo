@@ -1,0 +1,82 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: service-cloud-frondend-a
+spec:
+  hosts:
+  - "cloud-frontend.159.8.94.146.nip.io"
+  gateways:
+  - cloud-frontend-gateway
+  http:
+  - match:
+    - headers:
+        version:
+          exact: v2
+        mode:
+          exact: gold
+    route:
+    - destination:
+        host: service-cloud-frontend-e
+        subset: service-e-v2
+        port:
+          number: 80
+  - match:
+    - headers:
+        version:
+          exact: v2
+    route:
+    - destination:
+        host: service-cloud-frontend-a
+        subset: service-a-v2
+        port:
+          number: 80
+  - match:
+    - headers:
+        mode:
+          exact: gold
+    route:
+    - destination:
+        host: service-cloud-frontend-e
+        subset: service-e-v1
+        port:
+          number: 80
+  - route:
+    - destination:
+        host: service-cloud-frontend-a
+        subset: service-a-v1
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: service-cloud-frontend-a
+spec:
+  host: service-cloud-frontend-a
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: service-a-v1
+    labels:
+      version: v1
+  - name: service-a-v2
+    labels:
+      version: v2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: service-cloud-frontend-e
+spec:
+  host: service-cloud-frontend-e
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: service-e-v1
+    labels:
+      version: v1
+  - name: service-e-v2
+    labels:
+      version: v2

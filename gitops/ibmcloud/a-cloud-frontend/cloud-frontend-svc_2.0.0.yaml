@@ -1,12 +1,12 @@
 swagger: "2.0"
 info:
   title: cloud-frontend-svc
-  version: 1.0.0
+  version: 2.0.0
   description: Expose the cloud frontend service managed by service mesh
   x-ibm-name: cloud-frontend-svc
 schemes:
 - https
-basePath: /cloudfrontend-svc/v1
+basePath: /cloudfrontend-svc/v2
 produces:
 - application/json
 consumes:

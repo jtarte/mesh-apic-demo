@@ -1,4 +1,4 @@
-# How to deploy the demo
+# How to deploy the demo apps
 
 The page descirbes the different steps to follow on an OCP cluster to deploy the demo, service mesh part.
 

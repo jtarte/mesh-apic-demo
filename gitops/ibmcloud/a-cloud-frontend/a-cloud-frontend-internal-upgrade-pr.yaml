@@ -14,12 +14,12 @@ spec:
     value: cloud-frontend
   - name: genericName
     value: cloud-frontend
-  - name: hostBackend
-    value: cloud-backend.159.8.94.146.nip.io
-  - name: hostLegacy
-    value: z-backend.159.8.94.146.nip.io
+  - name: application_script
+    value: cloud-frontend/application-internal-upgrade.yaml
+  - name: virtualservice_script
+    value: cloud-frontend/virtual-service-internal-routing.yaml
   pipelineRef:
-    name: internal-service-upgrade
+    name: service-upgrade
   resources:
   - name: source
     resourceRef:

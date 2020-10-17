@@ -17,6 +17,8 @@ spec:
     - name: app_id
     - name: gateway
     - name: uri
+    - name: service
+    - name: version
   tasks:
   - name: deploy-api
     taskRef:

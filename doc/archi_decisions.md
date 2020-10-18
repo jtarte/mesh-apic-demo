@@ -2,7 +2,7 @@
 
 This page lists the architecture / design decision that has been made for the demo implementation
 
-# Swagger and product definition files
+## Swagger and product definition files
 The swagger, including ibm extension, and product description files are provided. No automatic generation of these files are included in thsi demo.
 
 ## Unicity of used cluster
@@ -13,7 +13,7 @@ Pipelines are launched manually. Even if the resources are stored in a GitHub re
 
 So the pipeline will be luanched by applying a `PipelineRun` resources. 
 
-# API Lifecycle
+## API Lifecycle
 This demo doesn't demontrate API lifecycle. No API lifecycle command are integrated in pipelines (except creation/publish). 
 A sh script is provided to supersede an API but not used by pipelines. Its usage is for demo purpose and shwo impact of superseded action on the API catalog.
 

@@ -12,7 +12,7 @@ This directory contains usefull scripts for api management.
 ./api-inventory.sh <CATALOG_NAME>
 ```
 
-* [__*api-supersede.sh*__](./api-supersede) supersede a product by another one in a catalog. 
+* [__*api-supersede.sh*__](./api-supersede.sh) supersede a product by another one in a catalog. 
 ```
 ./api-supersede.sh <CATALOG_NAME> <PRODUCT_TO_SUPERSEDE> <PRODUCT_SUPERSEDING>
 

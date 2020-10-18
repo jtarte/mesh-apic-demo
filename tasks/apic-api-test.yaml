@@ -72,7 +72,7 @@ spec:
       command:
         - /bin/bash
         - '-c'
-        - cat /workspace/source/apic/subs-org.yaml | sed "s#TARGET_PRODUCT#$(apic products:list -s $(params.server) -o $(params.org) -c $(params.catalog) --scope catalog $(params.product) | grep $(param.product):$(param.productVersion) | awk -F ' ' '{print $4}')#g" > /workspace/source/apic/subs.yaml
+        - cat /workspace/source/apic/subs-org.yaml | sed "s#TARGET_PRODUCT#$(apic products:list -s $(params.server) -o $(params.org) -c $(params.catalog) --scope catalog $(params.product) | grep $(params.product):$(params.productVersion) | awk -F ' ' '{print $4}')#g" > /workspace/source/apic/subs.yaml
       image: 'jtarte/apic-cli:latest'
       resources: {}
     - name: create-api-subscription

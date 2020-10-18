@@ -7,10 +7,14 @@ This directory contains usefull scripts for api management.
 ./api-discovery.sh <NAMESPACE_NAME>
 ```
 
-* [__*api-inventory*__](./api-inventory.sh) list the API that are published in a catalog (passed as parameter) on a APIC instance.
+* [__*api-inventory.sh*__](./api-inventory.sh) list the API that are published in a catalog (passed as parameter) on a APIC instance.
 ```
 ./api-inventory.sh <CATALOG_NAME>
 ```
+
+* [__*api-supersede.sh*__](./api-supersede) supersede a product by another one in a catalog. 
+```
+./api-supersede.sh <CATALOG_NAME> <PRODUCT_TO_SUPERSEDE> <PRODUCT_SUPERSEDING>
 
 *Pre-reqs*
 To execute the discovery script, you should be logged in the Openshift isntance.

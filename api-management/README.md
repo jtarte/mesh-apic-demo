@@ -15,6 +15,7 @@ This directory contains usefull scripts for api management.
 * [__*api-supersede.sh*__](./api-supersede.sh) supersede a product by another one in a catalog. 
 ```
 ./api-supersede.sh <CATALOG_NAME> <PRODUCT_TO_SUPERSEDE> <PRODUCT_SUPERSEDING>
+``` 
 
 *Pre-reqs*
 To execute the discovery script, you should be logged in the Openshift isntance.

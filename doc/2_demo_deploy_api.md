@@ -9,20 +9,14 @@ The first pipeline `apic-api-deploy`is used to
 
 To run the pipeline, you could use the `Start`context menu on the pipeline in the Openshift console or use a `PipeLineRun` file.
 ```
-oc apply -f 
+oc apply -f ./gitops/$CLUSTER/apic/publish-api-pr.yaml
 ```
 
-The second pipeline, `apic-api-test` make a test of the published API by
-* creating a subscription to the API on a existing application.
-* doing a basic call to the API.
-
-The current test is more a availabilty test. It call the HTTP and check if a HTTP 200 is received. No functional testest for the moment.
-
-To run the pipeline, you could use the `Start`context menu on the pipeline in the Openshift console or use a `PipeLineRun` file.
+To test the api, you could use scripts:
 ```
-oc apply -f 
+./gitops/$CLUSTER/test_api.sh 1
+
+./gitops/$CLUSTER/test_api_gold.sh 1
 ```
-
-
 *Remarks: in this demo, I separated the deployment from the test phase. IT is a design choice for the demo. In real life, another options / choice, like putting all otgether in one pipeline, could be made.*
 

@@ -5,6 +5,6 @@ This directory contains configuration files ans scripts to create a Service Mesh
 The `deploy-cp-instance.sh`script configures a Service Mesh control plane instance in the project passed as argument. 
 
 ``` 
-./deploy-cp-instance.sh istio-system
+./deploy-cp-instance.sh <TARGET_NAMESPACE>
 ``` 
 

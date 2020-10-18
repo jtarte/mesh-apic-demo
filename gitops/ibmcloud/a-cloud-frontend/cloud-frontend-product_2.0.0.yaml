@@ -3,12 +3,12 @@ info:
   title: cloud-frontend-product
   name: cloud-frontend-product
 gateways:
-- datapower-api-gateway
+  - datapower-api-gateway
 plans:
   default-plan:
     rate-limits:
       default:
-        value: 10/1hour
+        value: 100/1hour
     title: Default Plan
     description: Default Plan
     approval: false
@@ -26,4 +26,4 @@ visibility:
     orgs: []
     tags: []
     enabled: true
-product: 2.0.0
+product: 1.0.0

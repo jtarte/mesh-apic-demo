@@ -1,18 +1,18 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
   title: cloud-frontend-svc
   version: 2.0.0
   description: Expose the cloud frontend service managed by service mesh
   x-ibm-name: cloud-frontend-svc
 schemes:
-- https
+  - https
 basePath: /cloudfrontend-svc/v2
 produces:
-- application/json
+  - application/json
 consumes:
-- application/json
+  - application/json
 security:
-- clientID: []
+  - clientID: []
 definitions:
   InvokeResponse:
     type: object
@@ -25,24 +25,24 @@ paths:
   /invoke:
     get:
       responses:
-        "200":
+        '200':
           description: success
           schema:
             $ref: '#/definitions/InvokeResponse'
-        "401":
+        '401':
           description: unauthorized
           schema:
             type: object
       consumes:
-      - application/json
+        - application/json
       produces:
-      - application/json
+        - application/json
     parameters:
-    - name: mode
-      in: header
-      required: false
-      description: provide information about service level (gold)
-      type: string
+      - name: mode
+        in: header
+        required: false
+        description: provide information about service level (gold)
+        type: string
 securityDefinitions:
   clientID:
     type: apiKey
@@ -58,7 +58,7 @@ x-ibm-configuration:
   testable: true
   properties:
     target-url:
-      value: https://cloud-frontend.159.8.94.146.nip.io
+      value: 'https://cloud-frontend.159.8.94.146.nip.io'
       description: The URL of the target service
       encoded: false
   activity-log:
@@ -70,33 +70,40 @@ x-ibm-configuration:
   catalogs:
     sandbox:
       properties:
-        target-url: https://cloud-frontend.159.8.94.146.nip.io
+        target-url: 'https://cloud-frontend.159.8.94.146.nip.io'
     integration:
       properties:
-        target-url: https://cloud-frontend.159.8.94.146.nip.io
+        target-url: 'https://cloud-frontend.159.8.94.146.nip.io'
   assembly:
     execute:
-    - gatewayscript:
-        version: 2.0.0
-        title: URI Rewritting
-        source: |-
-          var rpath = context.get('request.path');
-          var bpath = context.get('api.root');
-          var dest_path = rpath.substr(bpath.length + 1);
-          context.set('dest_path', dest_path);
-    - invoke:
-        title: invoke
-        version: 2.0.0
-        verb: keep
-        target-url: $(target-url)$(dest_path)
-        follow-redirects: false
-        timeout: 60
-        parameter-control:
-          type: blacklist
-        header-control:
-          type: blacklist
-          values:
-          - ^X-IBM-Client-Id$
-        inject-proxy-headers: true
-        backend-type: json
-        description: call to invoke method
+      - gatewayscript:
+          version: 2.0.0
+          title: URI Rewritting
+          source: |-
+            var rpath = context.get('request.path');
+            var bpath = context.get('api.root');
+            var dest_path = rpath.substr(bpath.length + 1);
+            context.set('dest_path', dest_path);
+      - gatewayscript:
+          version: 2.0.0
+          title: addHeaderVersion
+          source: |
+            var hm = require('header-metadata');
+
+            hm.current.set('version', 'v2'); 
+      - invoke:
+          title: invoke
+          version: 2.0.0
+          verb: keep
+          target-url: $(target-url)$(dest_path)
+          follow-redirects: false
+          timeout: 60
+          parameter-control:
+            type: blacklist
+          header-control:
+            type: blacklist
+            values:
+              - ^X-IBM-Client-Id$
+          inject-proxy-headers: true
+          backend-type: json
+          description: call to invoke method

@@ -2,6 +2,10 @@
 
 The deployment of published API is done with tekton pipelines
 
+The authentication to APIC instance is managed inside the pipeline. The credentials are provided by a secret.
+Before to launch a API publish pipeline, you have to create a secret `apic-creds` that contains the `USERNAME`, `PASSWORD` and `REALM`used for the authnetication. 
+
+
 The first pipeline `apic-api-deploy`is used to
 * create a draft API using a swagger file.
 * create a draft Product using a product file. 
